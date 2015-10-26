@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="beanstalk.server.manager.class">PBergman\Bundle\BeanstalkBundle\Server\Manager</parameter>
+        <parameter key="beanstalk.class">PBergman\Bundle\BeanstalkBundle\Service\Beanstalk</parameter>
+    </parameters>
+
+    <services>
+        <service id="beanstalk.server.manager" class="%beanstalk.server.manager.class%"/>
+
+        <service id="beanstalk" class="%beanstalk.class%">
+            <argument type="service" id="beanstalk.server.manager" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="beanstalk.debug" class="PBergman\Bundle\BeanstalkBundle\Event\StreamDebugSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+    </services>
+
+</container>
