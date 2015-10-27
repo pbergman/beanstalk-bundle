@@ -36,6 +36,14 @@ interface ResponseInterface
     public function getData();
 
     /**
+     * overwrite the return data.
+     *
+     * @return $this
+     * @param  mixed $data
+     */
+    public function setData($data);
+
+    /**
      * should return the response given by Beanstalk
      *
      * @return string

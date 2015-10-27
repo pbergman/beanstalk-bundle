@@ -351,6 +351,12 @@ class BeanstalkWorkerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($response->isSuccess());
         $this->assertSame(ResponseInterface::RESPONSE_WATCHING, $response->getResponse());
         $this->assertSame(sprintf("watch %s\r\n", $tube), $connection->getHistory()[0]);
+
+        try {
+            $worker->watch('-bar');
+        } catch (\PBergman\Bundle\BeanstalkBundle\Exception\InvalidArgumentException $e) {
+            $this->assertRegExp('/Invalid tube name: "-bar"/', $e->getMessage());
+        }
     }
 
     /**

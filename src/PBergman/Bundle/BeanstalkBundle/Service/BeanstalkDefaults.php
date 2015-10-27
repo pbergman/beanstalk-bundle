@@ -20,7 +20,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class BeanstalkDefaults
 {
+    const TUBE_PATTERN = '/^(?!-)[a-zA-Z0-9-_+\/;\.\$_\(\)]{1,200}$/';
     const MAX_PRIORITY = (2**32-1); // Max 32 bits
+
     /** @var ConfigurationInterface  */
     protected $config;
     /** @var EventDispatcherInterface  */
@@ -61,7 +63,7 @@ class BeanstalkDefaults
      * @param   $payload
      * @return  null|Response\ResponseInterface
      */
-    protected function dispatch(Protocol\AbstractProtocol $protocol, ...$payload)
+    protected function dispatch(Protocol\AbstractProtocol $protocol, &...$payload)
     {
         $this->preDispatch($protocol, $payload);
         $response = $protocol->dispatch(...$payload);
@@ -79,7 +81,7 @@ class BeanstalkDefaults
         if (!is_null($this->dispatcher) && $this->dispatcher->hasListeners($eventName)) {
             $this->dispatcher->dispatch(
                 $eventName,
-                new Event\PreDispatchEvent($protocol, $payload)
+                new Event\PreDispatchEvent($payload, $protocol::COMMAND)
             );
         }
     }
@@ -351,5 +353,28 @@ class BeanstalkDefaults
             default:
                 throw Exception\ResponsePauseTubeException::unknownResponse($response->getResponse());
         }
+    }
+
+    /**
+     * @param   string  $name
+     * @return  bool
+     * @throws  Exception\InvalidArgumentException
+     */
+    protected function isValidTubeName($name)
+    {
+        if (false == preg_match(self::TUBE_PATTERN, $name)) {
+            throw new Exception\InvalidArgumentException(<<<EOE
+    Invalid tube name: "${name}"
+
+    Names, in this protocol, are ASCII strings. They may contain letters (A-Z and
+    a-z), numerals (0-9), hyphen ("-"), plus ("+"), slash ("/"), semicolon (";"),
+    dot ("."), dollar-sign ("$"), underscore ("_"), and parentheses ("(" and ")"),
+    but they may not begin with a hyphen. They are terminated by white space (either
+    a space char or end of line). Each name must be at least one character long.
+EOE
+            );
+        }
+
+        return true;
     }
 }

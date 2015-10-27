@@ -382,7 +382,7 @@ class BeanstalkDefaultTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataNameProvider
     */
-    public function testStatsTube($name, $id)
+    public function testStatsTube($name)
     {
         $dispatcher = $this->getNewMockDispatcherChecKName([
             BeanstalkEvents::PRE_DISPATCH_STATS_TUBE,
@@ -585,7 +585,7 @@ class BeanstalkDefaultTest extends \PHPUnit_Framework_TestCase
                 $this->assertSame($name, BeanstalkEvents::PRE_DISPATCH_QUIT);
                 /** @var \PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent $event  */
                 $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent', $event);
-                $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Protocol\QuitProtocol', $event->getProtocol());
+                $this->assertSame('quit', $event->getCommand());
             },
             function($name, $event){
                 $this->assertSame($name, BeanstalkEvents::POST_DISPATCH_QUIT);

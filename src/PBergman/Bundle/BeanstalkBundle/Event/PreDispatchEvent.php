@@ -5,32 +5,31 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Event;
 
-use PBergman\Bundle\BeanstalkBundle\Protocol\AbstractProtocol;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreDispatchEvent extends Event
 {
-    /** @var AbstractProtocol */
-    protected $protocol;
     /** @var mixed */
     protected $payload;
+    /** @var string  */
+    protected $command;
 
     /**
-     * @param AbstractProtocol $protocol
-     * @param mixed            $payload;
+     * @param mixed     $payload ;
+     * @param string    $command
      */
-    function __construct(AbstractProtocol $protocol, &$payload)
+    function __construct(&$payload, $command)
     {
-        $this->protocol = $protocol;
         $this->payload = &$payload;
+        $this->command = $command;
     }
 
     /**
-     * @return AbstractProtocol
+     * @return string
      */
-    public function getProtocol()
+    public function getCommand()
     {
-        return $this->protocol;
+        return $this->command;
     }
 
     /**

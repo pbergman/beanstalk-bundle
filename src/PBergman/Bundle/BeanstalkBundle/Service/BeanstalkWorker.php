@@ -179,6 +179,8 @@ class BeanstalkWorker extends BeanstalkDefaults
      */
     public function watch($tube)
     {
+        $this->isValidTubeName($tube);
+
         return $this->dispatch(
             new Protocol\WatchProtocol($this->getConnection()), $tube
         );

@@ -40,6 +40,15 @@ abstract class AbstractArrayResponse extends \ArrayObject implements ResponseInt
     /**
      * @inheritdoc
      */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
     function __call($name, $args = array())
     {
         if (preg_match('/^get(?P<method>\w+)$/', $name, $m)) {

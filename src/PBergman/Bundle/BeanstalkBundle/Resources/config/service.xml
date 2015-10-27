@@ -21,6 +21,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="beanstalk.data.transformer" class="PBergman\Bundle\BeanstalkBundle\Event\DataTransformSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
     </services>
 
 </container>

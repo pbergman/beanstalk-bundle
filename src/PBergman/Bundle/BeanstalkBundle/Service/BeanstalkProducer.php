@@ -29,7 +29,7 @@ class BeanstalkProducer extends BeanstalkDefaults
     {
         $response = $this->dispatch(
             new PutProtocol($this->getConnection()),
-            $data, $priority, $delay, $ttr
+            $data, $priority, $delay, $ttr, $this->usingTube
         );
 
         switch ($response->getResponse()) {
@@ -61,7 +61,9 @@ class BeanstalkProducer extends BeanstalkDefaults
      */
     public function useTube($tube)
     {
-        $this->usingTube = $this->dispatch(new UseProtocol($this->getConnection()), $tube)->getData();
+        if ($this->isValidTubeName($tube)) {
+            $this->usingTube = $this->dispatch(new UseProtocol($this->getConnection()), $tube)->getData();
+        }
         return $this;
     }
 

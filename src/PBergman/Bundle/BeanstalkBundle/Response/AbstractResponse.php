@@ -32,6 +32,15 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * @inheritdoc
      */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getResponse()
     {
         return $this->response;

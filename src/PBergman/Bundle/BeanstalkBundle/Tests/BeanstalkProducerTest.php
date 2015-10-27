@@ -5,8 +5,6 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Tests;
 
-use PBergman\Bundle\BeanstalkBundle\Response\ResponseInterface;
-use PBergman\Bundle\BeanstalkBundle\Server\ConnectionInterface;
 use PBergman\Bundle\BeanstalkBundle\Tests\Helper\ConnectionTestHelper;
 use PBergman\Bundle\BeanstalkBundle\BeanstalkEvents;
 
@@ -55,8 +53,8 @@ class BeanstalkProducerTest extends \PHPUnit_Framework_TestCase
                 $this->assertSame($name, BeanstalkEvents::PRE_DISPATCH_PUT);
                 /** @var \PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent $event  */
                 $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent', $event);
-                $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Protocol\PutProtocol', $event->getProtocol());
-                $this->assertSame([$data, $priority ,$delay, $ttr], $event->getPayload());
+                $this->assertSame('put', $event->getCommand());
+                $this->assertSame([$data, $priority ,$delay, $ttr, 'default'], $event->getPayload());
             },
             function($name, $event){
                 $this->assertSame($name, BeanstalkEvents::POST_DISPATCH_PUT);
@@ -173,7 +171,7 @@ class BeanstalkProducerTest extends \PHPUnit_Framework_TestCase
                 $this->assertSame($name, BeanstalkEvents::PRE_DISPATCH_USE);
                 /** @var \PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent $event  */
                 $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Event\PreDispatchEvent', $event);
-                $this->assertInstanceOf('PBergman\Bundle\BeanstalkBundle\Protocol\UseProtocol', $event->getProtocol());
+                $this->assertSame('use', $event->getCommand());
             },
             function($name, $event){
                 $this->assertSame($name, BeanstalkEvents::POST_DISPATCH_USE);
@@ -191,6 +189,13 @@ class BeanstalkProducerTest extends \PHPUnit_Framework_TestCase
         $producer->useTube($tube);
         $this->assertEquals($producer->getUsingTube(), $tube);
         $this->assertSame(sprintf("use %s\r\n", $tube), $connection->getHistory()[0]);
+
+        try {
+            $producer->useTube('-bar');
+        } catch (\PBergman\Bundle\BeanstalkBundle\Exception\InvalidArgumentException $e) {
+            $this->assertRegExp('/Invalid tube name: "-bar"/', $e->getMessage());
+        }
+
     }
 
 

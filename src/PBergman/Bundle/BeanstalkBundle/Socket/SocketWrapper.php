@@ -8,6 +8,11 @@ namespace PBergman\Bundle\BeanstalkBundle\Socket;
 use PBergman\Bundle\BeanstalkBundle\Exception\ConnectionException;
 use PBergman\Bundle\BeanstalkBundle\Exception\InvalidArgumentException;
 
+/**
+ * Class SocketWrapper
+ *
+ * @package PBergman\Bundle\BeanstalkBundle\Socket
+ */
 class SocketWrapper
 {
     const SELECT_WRITE = 1;
@@ -101,6 +106,15 @@ class SocketWrapper
     public function flush()
     {
         return fflush($this->getSocket());
+    }
+
+    /**
+     * @return string
+     * @throws ConnectionException
+     */
+    public function getContent()
+    {
+        return stream_get_contents($this->getSocket());
     }
 
     /**
