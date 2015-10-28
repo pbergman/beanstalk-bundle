@@ -42,7 +42,7 @@ abstract class AbstractArrayResponse extends \ArrayObject implements ResponseInt
      */
     public function setData($data)
     {
-        $this->data = $data;
+        $this->exchangeArray($data);
         return $this;
     }
 

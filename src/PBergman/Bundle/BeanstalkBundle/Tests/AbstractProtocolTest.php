@@ -5,7 +5,6 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Tests;
 
-
 use PBergman\Bundle\BeanstalkBundle\Protocol\AbstractProtocol;
 use PBergman\Bundle\BeanstalkBundle\Server\Connection;
 
