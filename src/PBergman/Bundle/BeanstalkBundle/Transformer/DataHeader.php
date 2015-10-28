@@ -5,6 +5,8 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Transformer;
 
+use PBergman\Bundle\BeanstalkBundle\Exception\TransformerException;
+
 /**
  * Class DataHeader
  *
@@ -69,8 +71,9 @@ class DataHeader implements PackInterface
     /**
      * will unpack binary string and return new instance of self with properties set
      *
-     * @param   string  $data
-     * @return  self
+     * @param   string $data
+     * @return DataHeader
+     * @throws TransformerException
      */
     static function unpack($data)
     {
@@ -78,7 +81,7 @@ class DataHeader implements PackInterface
         $info += unpack('Lsignature/A4hash/Spid/Cserialized/Ccompressed/Ctype/A*name', substr($data, 2, $info['length'] - 2));
 
         if (self::SIGNATURE !== $info['signature']) {
-            throw new \RuntimeException(sprintf('Signature mismatch 0x%x !== 0x%x', $info['signature'], self::SIGNATURE));
+            throw TransformerException::signatureMismatch($info['signature'], self::SIGNATURE);
         }
 
         return (new self())

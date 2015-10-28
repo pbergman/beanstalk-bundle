@@ -5,6 +5,8 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Transformer;
 
+use PBergman\Bundle\BeanstalkBundle\Exception\TransformerException;
+
 /**
  * Class DataTransformer
  *
@@ -32,7 +34,8 @@ class DataTransformer implements PackInterface
     /**
      * will return a  binary string
      *
-     * @return string
+     * @return  string
+     * @throws  TransformerException
      */
     public function pack()
     {
@@ -63,7 +66,7 @@ class DataTransformer implements PackInterface
                 break;
             case 'resource':
             case 'unknown type':
-                throw new \InvalidArgumentException('Unsupported type given: "%s"', gettype($this->data));
+                throw TransformerException::unsupportedType($this->data);
                 break;
         }
 
@@ -88,8 +91,9 @@ class DataTransformer implements PackInterface
     /**
      *  will unpack binary string and return new instance of self with properties set
      *
-     * @param   string  $data
+     * @param   string $data
      * @return  DataContainer
+     * @throws  TransformerException
      */
     static function unpack($data)
     {
@@ -98,7 +102,7 @@ class DataTransformer implements PackInterface
         $hash = hash('crc32b', $data, true);
 
         if ($hash !== $header->getHash()) {
-            throw new \RuntimeException(sprintf('CRC mismatch 0x%x !== 0x%x', $hash, $header->getHash()));
+            throw TransformerException::crcMismatch($hash, $header->getHash());
         }
 
         if ($header->isCompressed()) {
