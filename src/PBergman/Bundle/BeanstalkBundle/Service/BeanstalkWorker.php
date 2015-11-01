@@ -40,6 +40,8 @@ class BeanstalkWorker extends BeanstalkDefaults
             );
         }
 
+        Exception\ResponseReserveException::$RESPONSE = $response->getResponse();
+
         switch ($response->getResponse()) {
             case $response::RESPONSE_DEADLINE_SOON:
                 throw Exception\ResponseReserveException::deadlineSoon();
