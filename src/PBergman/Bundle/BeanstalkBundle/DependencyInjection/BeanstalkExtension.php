@@ -28,6 +28,13 @@ class BeanstalkExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('service.xml');
+
+        if ($config['debug'] && $container->hasDefinition('beanstalk.debug')) {
+            $container->getDefinition('beanstalk.debug')->addTag('kernel.event_subscriber');
+        } elseif ($container->hasDefinition('beanstalk.debug')) {
+            $container->removeDefinition('beanstalk.debug');
+        }
+
         if ($container->hasDefinition('beanstalk.server.manager')) {
             $managerDefinition = $container->getDefinition('beanstalk.server.manager');
             foreach ($config['servers'] as $name => $config) {

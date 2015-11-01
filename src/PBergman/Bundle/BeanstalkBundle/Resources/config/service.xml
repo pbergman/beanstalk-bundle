@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="beanstalk.server.manager.class">PBergman\Bundle\BeanstalkBundle\Server\Manager</parameter>
         <parameter key="beanstalk.class">PBergman\Bundle\BeanstalkBundle\Service\Beanstalk</parameter>
+        <parameter key="beanstalk.debug.class">PBergman\Bundle\BeanstalkBundle\Event\StreamDebugSubscriber</parameter>
     </parameters>
 
     <services>
@@ -17,9 +18,7 @@
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="beanstalk.debug" class="PBergman\Bundle\BeanstalkBundle\Event\StreamDebugSubscriber">
-            <tag name="kernel.event_subscriber"/>
-        </service>
+        <service id="beanstalk.debug" class="%beanstalk.debug.class%" />
 
         <service id="beanstalk.data.transformer" class="PBergman\Bundle\BeanstalkBundle\Event\DataTransformSubscriber">
             <tag name="kernel.event_subscriber"/>

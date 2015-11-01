@@ -30,6 +30,9 @@ class Configuration implements ConfigurationInterface
         return
             $this->newRootNode('beanstalk')
                 ->children()
+                    ->booleanNode('debug')
+                        ->defaultFalse()
+                    ->end()
                     ->append($this->getServerNode())
                 ->end()
             ->end()
@@ -43,6 +46,11 @@ class Configuration implements ConfigurationInterface
     protected function newRootNode($name)
     {
         return (new Builder\TreeBuilder())->root($name);
+    }
+
+    public function getDefaultsNode()
+    {
+
     }
 
     /**
