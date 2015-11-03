@@ -7,14 +7,12 @@ namespace PBergman\Bundle\BeanstalkBundle\Command\Worker;
 
 use PBergman\Bundle\BeanstalkBundle\Exception\InvalidArgumentException;
 use PBergman\Bundle\BeanstalkBundle\Exception\ResponseReserveException;
-use PBergman\Bundle\BeanstalkBundle\Response\ResponseInterface;
 use PBergman\Bundle\BeanstalkBundle\Transformer\DataContainer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ListenerCommand extends ContainerAwareCommand
 {
@@ -79,8 +77,8 @@ class ListenerCommand extends ContainerAwareCommand
                 $service = $this->get($name);
                 $service->$method($worker, $work->getData(), $work->getHeader());
             } catch (ResponseReserveException $e) {
-                switch($e::$RESPONSE) {
-                    case ResponseInterface::RESPONSE_TIMED_OUT:
+                switch($e->getCode()) {
+                    case $e::CODE_TIMEOUT:
                         $output->writeln(sprintf('<error>A timeout (%s seconds) was reached while waiting for work</error>'));
                         break;
                     default:
