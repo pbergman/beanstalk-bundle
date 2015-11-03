@@ -5,6 +5,8 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Exception\Traits;
 
+use PBergman\Bundle\BeanstalkBundle\Exception\ResponseException;
+
 trait TubeTrait
 {
     /**
@@ -13,6 +15,6 @@ trait TubeTrait
      */
     static function tubeDoesNotExist($tube)
     {
-        return new self(sprintf('Tube "%s" does not exist', $tube));
+        return new self(sprintf('Tube "%s" does not exist', $tube), ResponseException::NOT_FOUND);
     }
 }

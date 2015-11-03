@@ -13,6 +13,6 @@ class ResponsePeekException extends ResponseException
      */
     static function notFound()
     {
-        return new self('The requested job doesn\'t exist or there are no jobs in the requested state');
+        return new self('The requested job doesn\'t exist or there are no jobs in the requested state', self::NOT_FOUND);
     }
 }

@@ -7,7 +7,6 @@ namespace PBergman\Bundle\BeanstalkBundle\Protocol;
 
 use PBergman\Bundle\BeanstalkBundle\Exception\InvalidArgumentException;
 use PBergman\Bundle\BeanstalkBundle\Exception\ResponseErrorException;
-use PBergman\Bundle\BeanstalkBundle\Exception\ResponseProtocolException ;
 use PBergman\Bundle\BeanstalkBundle\Response\ResponseInterface;
 use PBergman\Bundle\BeanstalkBundle\Server\ConnectionInterface;
 

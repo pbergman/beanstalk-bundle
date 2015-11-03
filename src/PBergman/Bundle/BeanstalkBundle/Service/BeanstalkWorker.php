@@ -74,11 +74,7 @@ class BeanstalkWorker extends BeanstalkDefaults
                 return $response;
                 break;
             case $response::RESPONSE_NOT_FOUND:
-                throw new Exception\ResponseDeleteException(
-                    'The job does not exist or is not either reserved by the
-                    client, ready, or buried. This could happen if the job
-                    timed out before the client sent the delete command.'
-                );
+                throw Exception\ResponseDeleteException::notFound();
                 break;
             default:
                 throw Exception\ResponseDeleteException::unknownResponse($response->getResponse());

@@ -78,7 +78,7 @@ class ListenerCommand extends ContainerAwareCommand
                 $service->$method($worker, $work->getData(), $work->getHeader());
             } catch (ResponseReserveException $e) {
                 switch($e->getCode()) {
-                    case $e::CODE_TIMEOUT:
+                    case $e::TIMED_OUT:
                         $output->writeln(sprintf('<error>A timeout (%s seconds) was reached while waiting for work</error>'));
                         break;
                     default:

@@ -15,9 +15,8 @@ class ResponsePutException extends ResponseException
     static function expectedCRLF()
     {
         return new self(
-            'The job body must be followed by a CR-LF pair, that is, "\r\n".
-            These two bytes are not counted in the job size given by the client
-            in the put command line.'
+            "The job body must be followed by a CR-LF pair, that is, \"\\r\\n\".\nThese two bytes are not counted in the job size given by the client\nin the put command line.",
+            self::EXPECTED_CRLF
         );
     }
 
@@ -27,7 +26,8 @@ class ResponsePutException extends ResponseException
     static function jobToBig()
     {
         return new self(
-            'The client has requested to put a job with a body larger than max-job-size bytes'
+            'The client has requested to put a job with a body larger than max-job-size bytes',
+            self::JOB_TOO_BIG
         );
     }
 
@@ -37,8 +37,8 @@ class ResponsePutException extends ResponseException
     static function draining()
     {
         return new self(
-            'The server has been put into "drain mode" and is no longer accepting new
-            jobs. The client should try another server or disconnect and try again later.'
+            "The server has been put into \"drain mode\" and is no longer accepting new\njobs. The client should try another server or disconnect and try again later.",
+            self::DRAINING
         );
     }
 }

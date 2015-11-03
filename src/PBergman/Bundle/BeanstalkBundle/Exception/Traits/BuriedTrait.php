@@ -5,6 +5,7 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Exception\Traits;
 
+use PBergman\Bundle\BeanstalkBundle\Exception\ResponseException;
 use PBergman\Bundle\BeanstalkBundle\Response\ResponseInterface;
 
 trait BuriedTrait
@@ -18,7 +19,9 @@ trait BuriedTrait
      */
     static function buried(ResponseInterface $response)
     {
-        return (new self('The server ran out of memory trying to grow the priority queue data structure.'))->setResponse($response);
+        return (new self(
+            'The server ran out of memory trying to grow the priority queue data structure.', ResponseException::BURIED
+        ))->setResponse($response);
     }
 
     /**

@@ -5,6 +5,8 @@
  */
 namespace PBergman\Bundle\BeanstalkBundle\Exception\Traits;
 
+use PBergman\Bundle\BeanstalkBundle\Exception\ResponseException;
+
 trait JobTrait
 {
     /**
@@ -14,7 +16,7 @@ trait JobTrait
      */
     static function jobDoesNotExist($job, $code = "NOT_FOUND")
     {
-        return new self(sprintf('[%s] Job "%s" does not exist.', $code, $job));
+        return new self(sprintf('[%s] Job "%s" does not exist.', $code, $job), ResponseException::NOT_FOUND);
     }
 
     /**
@@ -24,7 +26,9 @@ trait JobTrait
      */
     static function jobDoesNotExistOrNotKickable($job, $code = "NOT_FOUND")
     {
-        return new self(sprintf('[%s] Job "%s" does not exist or is not in a kickable state.', $code, $job));
+        return new self(
+            sprintf('[%s] Job "%s" does not exist or is not in a kickable state.', $code, $job), ResponseException::NOT_FOUND
+        );
     }
 
     /**
@@ -33,7 +37,7 @@ trait JobTrait
     static function jobDoesNotExistOrNotReservedByClient($id)
     {
         return new self(
-            sprintf('Job %u does not exist or is not reserved by the client.', $id)
+            sprintf('Job %u does not exist or is not reserved by the client.', $id), ResponseException::NOT_FOUND
         );
     }
 }
