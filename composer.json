@@ -1,5 +1,5 @@
 {
-    "name": "philip/beanstalk-bundle",
+    "name": "pbergman/beanstalk-bundle",
     "description": "a fully tested symfony bundle for beanstalk",
     "license": "proprietary",
     "type": "bundle",
